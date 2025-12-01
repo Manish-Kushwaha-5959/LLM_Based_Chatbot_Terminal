@@ -1,0 +1,32 @@
+{
+  "R": [
+    "Do you enjoy working with tools, machines, or physical tasks?",
+    "Would you prefer outdoor tasks over office tasks?",
+    "Do you like fixing or repairing things?"
+  ],
+  "I": [
+    "Do you enjoy solving logical problems or puzzles?",
+    "Are you curious about how scientific systems work?",
+    "Do you like analyzing data or patterns?"
+  ],
+  "A": [
+    "Do you enjoy creating art, music, or writing?",
+    "Do you like expressing ideas in creative ways?",
+    "Do you prefer flexible, unstructured tasks?"
+  ],
+  "S": [
+    "Do you enjoy helping, teaching, or supporting others?",
+    "Do you feel comfortable communicating with people?",
+    "Do you like working in a group or team?"
+  ],
+  "E": [
+    "Do you enjoy leading groups or making decisions?",
+    "Do you like persuading or motivating people?",
+    "Are you comfortable taking calculated risks to achieve goals?"
+  ],
+  "C": [
+    "Do you enjoy organizing data or doing detailed tasks?",
+    "Do you prefer working with rules and structured processes?",
+    "Do you like maintaining records or documentation?"
+  ]
+}
