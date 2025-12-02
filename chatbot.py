@@ -26,6 +26,7 @@ load_dotenv()
 # ---------- Config ----------
 QUESTIONS_FILE = "questions.json"
 NUM_QUESTIONS_TO_ASK = 6
+NUM_LLM_GENERATED_QUESTIONS = 5   # you can change this anytime
 MODEL_NAME = "gemini-2.0-flash"
 API_ENV_VAR = "GOOGLE_API_KEY"  # ensure .env has this key
 # ----------------------------
@@ -194,6 +195,109 @@ def ask_llm_for_recommendations(qa_history, normalized_scores):
     # if parsing fails, return None and raw text for debugging
     return None, text_str
 
+def generate_llm_mcq_questions(qa_history, num_questions=NUM_LLM_GENERATED_QUESTIONS):
+    """
+    Uses Gemini to generate MCQ questions after the initial RIASEC stage.
+    Produces `num_questions` MCQs, each with 4 answer options (A/B/C/D).
+    Returns a list of dicts:
+    [
+        {
+            "question": "...",
+            "options": {"A": "...", "B": "...", "C": "...", "D": "..."}
+        },
+        ...
+    ]
+    """
+
+    # Format QA history for LLM context
+    qa_lines = []
+    for idx, (trait, question, rating) in enumerate(qa_history, start=1):
+        qa_lines.append(f"{idx}. Trait={trait} | Q=\"{question}\" | Rating={rating}")
+
+    human_text = (
+        "You are an expert in psychometric assessment and adaptive career interest testing.\n"
+        "Based on the user's previous answers listed below, generate "
+        f"{num_questions} multiple-choice questions (MCQ) that capture deeper information "
+        "about the user's career interests. These MCQs should refine and maximize information "
+        "gain for predicting career fit.\n\n"
+
+        "### Rules for output:\n"
+        f"- Generate exactly {num_questions} questions.\n"
+        "- Each question must have exactly 4 options labeled A, B, C, D.\n"
+        "- Options must be meaningful and distinct.\n"
+        "- Output JSON ONLY in this exact schema:\n\n"
+        "{\n"
+        '  "questions": [\n'
+        '    {\n'
+        '      "question": "<text>",\n'
+        '      "options": {\n'
+        '        "A": "<text>",\n'
+        '        "B": "<text>",\n'
+        '        "C": "<text>",\n'
+        '        "D": "<text>"\n'
+        "      }\n"
+        "    }\n"
+        "  ]\n"
+        "}\n\n"
+
+        "### User Q&A history:\n"
+        + "\n".join(qa_lines)
+        + "\n\n"
+        "Do NOT add explanations or commentary. Output JSON only."
+    )
+
+    chat_msgs = chat_history_messages + [HumanMessage(content=human_text)]
+    print("\nGenerating MCQ questions using LLM...\n")
+    response = llm.invoke(chat_msgs)
+
+    text = getattr(response, "content", "").strip()
+
+    # Try to parse JSON
+    try:
+        data = json.loads(text)
+        return data.get("questions", [])
+    except:
+        # Fallback: try substring JSON extraction
+        start = text.find("{")
+        end = text.rfind("}")
+        if start != -1 and end != -1:
+            try:
+                data = json.loads(text[start:end+1])
+                return data.get("questions", [])
+            except:
+                pass
+
+    print("LLM MCQ JSON parse failed. Raw output:\n", text)
+    return []
+
+def run_mcq_stage(mcq_list, qa_history):
+    """
+    Asks the user the generated MCQs in the terminal.
+    Updates qa_history with entries:
+      ("MCQ", question, chosen_option)
+    """
+    print("\n=== LLM-Generated MCQ Stage ===")
+    print(f"You will now answer {len(mcq_list)} additional questions.\n")
+
+    for i, qdata in enumerate(mcq_list, start=1):
+        print(f"\nMCQ {i}: {qdata['question']}")
+        for opt_key, opt_text in qdata["options"].items():
+            print(f"  {opt_key}. {opt_text}")
+
+        # Input validation
+        while True:
+            choice = input("Your choice (A/B/C/D): ").strip().upper()
+            if choice in ["A", "B", "C", "D"]:
+                break
+            print("Invalid choice — select A, B, C, or D.")
+
+        qa_history.append(("MCQ", qdata["question"], choice))
+
+        # Add to LLM context (optional)
+        chat_history_messages.append(
+            HumanMessage(content=f"User answered MCQ: Q='{qdata['question']}' | Choice={choice}")
+        )
+
 
 def main():
     print("=== Adaptive RIASEC Test Chatbot ===")
@@ -218,9 +322,26 @@ def main():
 
         asked += 1
 
-    # Done with questions
-    print("\n--- Test Complete ---")
+    # Stage 1 Complete — 6 RIASEC questions
+    print("\n--- Stage 1 (RIASEC) Complete ---")
+
+    # Generate MCQ questions using LLM
+    mcq_questions = generate_llm_mcq_questions(qa_history, NUM_LLM_GENERATED_QUESTIONS)
+
+    # Ask MCQs if successfully generated
+    if mcq_questions:
+        run_mcq_stage(mcq_questions, qa_history)
+    else:
+        print("Skipping MCQ stage due to generation error.")
+
+    # Now compute normalized RIASEC results AFTER MCQ stage (MCQs do not affect scores)
+    print("\n--- All Questions Completed ---")
     normalized = normalize_scores()
+
+    print("\nNormalized RIASEC scores (0-1):")
+    for t in TRAITS:
+        print(f" {t}: {normalized[t]}")
+
     print("\nNormalized RIASEC scores (0-1):")
     for t in TRAITS:
         print(f" {t}: {normalized[t]}")
