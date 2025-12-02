@@ -129,24 +129,72 @@ def build_recommendation_prompt(qa_history, normalized_scores):
     for idx, (trait, question, rating) in enumerate(qa_history, start=1):
         qa_lines.append(f"{idx}. Trait: {trait} | Q: {question} | Rating: {rating}")
 
-    human_text = (
-        "You are an expert career counselor. Based on the user's answers below, "
-        "recommend 2-3 career options. Return ONLY valid JSON (no extra text). "
-        "Output schema must be:\n\n"
-        "{\n"
-        '  "recommendations": [\n'
-        '    {"career": "<career name>", "reason": "<short reason (1-2 sentences)>"}\n'
-        "  ]\n"
-        "}\n\n"
-        "Do not include any additional commentary or markdown — only the JSON.\n\n"
-        "User Q&A (ordered):\n"
-        + "\n".join(qa_lines)
-        + "\n\n"
-        "Final normalized RIASEC scores (each between 0 and 1):\n"
-        + json.dumps(normalized_scores, indent=2)
-        + "\n\n"
-        "Give 2-3 career recommendations that match the user's profile. Keep reasons concise and tie each reason to the user's RIASEC strengths shown above."
-    )
+    human_text = """
+You are an expert career counselor.
+
+Based on the user's answers below, recommend 2–3 career options.
+
+IMPORTANT OUTPUT RULES:
+- Return ONLY valid JSON
+- NO markdown
+- NO explanations outside JSON
+- Follow the exact schema below
+
+OUTPUT SCHEMA:
+{
+  "recommendations": [
+    {
+      "career": "<career name>",
+      "reason": "<short reason (1–2 sentences) tied to the user's RIASEC strengths>",
+      "stream": "<science | commerce | arts>",
+      "degrees": [
+        {
+          "degree": "<general degree name>",
+          "specializations": ["<specialization 1>", "<specialization 2>", "<specialization 3>"]
+        }
+      ]
+    }
+  ]
+}
+
+DEGREE STRUCTURE RULES:
+- Each career MUST include 2–3 general degree options
+- Each degree MUST include 2–4 realistic general specializations
+- Degrees and specializations must be real and commonly offered in India
+
+EXAMPLE (DO NOT COPY, ONLY FOLLOW STRUCTURE):
+
+{
+  "career": "Software Developer",
+  "reason": "Strong Investigative and Realistic traits indicate logical thinking and a preference for problem-solving tasks.",
+  "stream": "science",
+  "degrees": [
+    {
+      "degree": "B.Tech",
+      "specializations": ["Computer Science", "Information Technology", "Artificial Intelligence & Machine Learning"]
+    },
+    {
+      "degree": "B.Sc",
+      "specializations": ["Computer Science", "Data Science", "Information Technology"]
+    },
+    {
+      "degree": "BCA",
+      "specializations": ["Software Development", "Mobile Application Development", "Cloud Computing"]
+    }
+  ]
+}
+
+Now analyze the user data below and generate recommendations using the same structure.
+
+User Q&A (ordered):
+{qa_history}
+
+Final normalized RIASEC scores (each between 0 and 1):
+{normalized_scores}
+
+Generate 2–3 career recommendations that best match the user's profile.
+"""
+
 
     return human_text
 
