@@ -1,32 +1,79 @@
 {
   "R": [
-    "Do you enjoy working with tools, machines, or physical tasks?",
-    "Would you prefer outdoor tasks over office tasks?",
-    "Do you like fixing or repairing things?"
+    "Do you enjoy repairing household items, gadgets, or mechanical equipment?",
+    "Would you like to work outdoors in fields such as agriculture, forestry, or wildlife management?",
+    "Do you find operating machines, tools, or hardware interesting?",
+    "Would you enjoy working in construction, civil works, or infrastructure projects?",
+    "Do you feel comfortable with physical tasks like field surveys, drilling, or sample collection?",
+    "Would you like to work as an electrician, technician, or machine operator someday?",
+    "Do you enjoy assembling things like furniture, circuits, or DIY engineering projects?",
+    "Would you consider a career in automobile maintenance or mechanical workshop?",
+    "Do you like participating in NCC, army drills, or physical training activities?",
+    "Are you attracted to hands-on careers like mechanic, technician, firefighter, or army officer?"
   ],
+
   "I": [
-    "Do you enjoy solving logical problems or puzzles?",
-    "Are you curious about how scientific systems work?",
-    "Do you like analyzing data or patterns?"
+    "Do you enjoy solving scientific or mathematical problems?",
+    "Would you like to work in medical fields like doctor, surgeon, or researcher?",
+    "Do you get curious about how things work internally (machines, body, systems)?",
+    "Do you enjoy coding, building algorithms, or experimenting with AI/ML?",
+    "Would you like a career as an engineer, scientist, or data analyst?",
+    "Do you enjoy researching new topics, reading science journals, or doing experiments?",
+    "Do you like analyzing charts, patterns, or solving logical puzzles?",
+    "Are you interested in space science, robotics, biotechnology, or pharmaceuticals?",
+    "Do you enjoy exploring why events happen rather than just accepting them?",
+    "Would you like to pursue careers like astrophysicist, software developer, or medical scientist?"
   ],
+
   "A": [
-    "Do you enjoy creating art, music, or writing?",
-    "Do you like expressing ideas in creative ways?",
-    "Do you prefer flexible, unstructured tasks?"
+    "Do you enjoy drawing, painting, writing, or creating music?",
+    "Would you like to work in film-making, animation, or acting?",
+    "Do you prefer tasks where you think freely rather than follow strict rules?",
+    "Would you enjoy being a designer — graphic, UI/UX, fashion, or interior?",
+    "Do you get inspired by creative works like movies, poems, architecture, or art?",
+    "Would you like to become an author, musician, journalist, or photographer?",
+    "Do you enjoy brainstorming new ideas or artistic concepts?",
+    "Do you like storytelling, script-writing, or content creation?",
+    "Would you like to be a digital creator, influencer, or creative director?",
+    "Do you enjoy crafts such as hand-made products, decor, or creative product design?"
   ],
+
   "S": [
-    "Do you enjoy helping, teaching, or supporting others?",
-    "Do you feel comfortable communicating with people?",
-    "Do you like working in a group or team?"
+    "Do you enjoy helping others learn or solve their problems?",
+    "Would you like to become a teacher, counselor, or psychologist?",
+    "Do you feel comfortable communicating with groups of people?",
+    "Would you enjoy working as a nurse, social worker, or healthcare provider?",
+    "Do you participate in activities like events, group tasks, or volunteering?",
+    "Do you like guiding others in studies, career decisions, or personal issues?",
+    "Would you take a role where empathy, care, and support matter?",
+    "Do you enjoy collaborating rather than working alone?",
+    "Would you like to work in HR, public relations, or community service?",
+    "Do you feel satisfied when you make someone else’s life better?"
   ],
+
   "E": [
-    "Do you enjoy leading groups or making decisions?",
-    "Do you like persuading or motivating people?",
-    "Are you comfortable taking calculated risks to achieve goals?"
+    "Do you enjoy taking leadership roles in school or group activities?",
+    "Would you like to start your own business or startup someday?",
+    "Do you enjoy convincing or persuading people about ideas/products?",
+    "Would you like to work in management, MBA roles, or entrepreneurship?",
+    "Do you like organizing events, delegating tasks, or leading discussions?",
+    "Would you enjoy being a politician, lawyer, public speaker, or diplomat?",
+    "Do competition-based goals motivate you — sales, marketing, finance?",
+    "Would you like a career where risk-taking and decision-making are required?",
+    "Do you aim for positions of authority like CEO, IAS, IPS, or defense officer?",
+    "Are you comfortable negotiating deals, marketing strategies, or public campaigns?"
   ],
+
   "C": [
-    "Do you enjoy organizing data or doing detailed tasks?",
-    "Do you prefer working with rules and structured processes?",
-    "Do you like maintaining records or documentation?"
+    "Do you prefer structured tasks with rules and organized workflows?",
+    "Would you like a career such as CA, accountant, auditor or tax consultant?",
+    "Do you enjoy working with documents, spreadsheets, bills, or financial reports?",
+    "Are you good at maintaining records, lists, databases or paperwork?",
+    "Do you feel satisfied when things are arranged neatly and systematically?",
+    "Would you like to work in banking, administration, or clerical management?",
+    "Do you enjoy tasks involving data entry, documentation, or reporting?",
+    "Are you comfortable following protocols, guidelines, and detailed procedures?",
+    "Would you like a risk-free stable desk job over a dynamic uncertain job?",
+    "Do careers like CA, banking officer, government clerk, or data manager interest you?"
   ]
 }
